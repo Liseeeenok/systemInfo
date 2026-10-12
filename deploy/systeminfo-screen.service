@@ -1,0 +1,24 @@
+[Unit]
+Description=SystemInfo desktop screenshot capture (X11 -> JPEG)
+After=graphical.target systemd-user-sessions.service
+Wants=graphical.target
+
+[Service]
+Type=simple
+User=warlord
+Group=warlord
+Environment=DISPLAY=:0.0
+Environment=XAUTHORITY=/home/warlord/.Xauthority
+Environment=SYSTEMINFO_SCREEN_INTERVAL=4
+Environment=SYSTEMINFO_SCREEN_WIDTH=1280
+Environment=SYSTEMINFO_SCREEN_SIZE=1920x1080
+RuntimeDirectory=systeminfo
+RuntimeDirectoryMode=0755
+ExecStart=/usr/local/bin/systeminfo-screen.sh
+Restart=always
+RestartSec=3
+Nice=10
+IOSchedulingClass=idle
+
+[Install]
+WantedBy=multi-user.target

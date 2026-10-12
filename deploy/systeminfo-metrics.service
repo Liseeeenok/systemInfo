@@ -1,0 +1,23 @@
+[Unit]
+Description=SystemInfo metrics collector (Laravel artisan loop)
+After=network.target postgresql.service
+Wants=postgresql.service
+
+[Service]
+Type=simple
+User=www-data
+Group=www-data
+WorkingDirectory=/var/www/systeminfo
+ExecStart=/usr/bin/php /var/www/systeminfo/artisan systeminfo:collect --loop
+Restart=always
+RestartSec=5
+StandardOutput=journal
+StandardError=journal
+# The collector only needs to read /proc and talk to postgres.
+ProtectSystem=full
+ProtectHome=read-only
+PrivateTmp=true
+NoNewPrivileges=true
+
+[Install]
+WantedBy=multi-user.target
